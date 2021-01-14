@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<div class="res">
-    <u> <h3>{{station_title}}</h3> </u>
+    <br>
+<div class="title infobox">
+        <br>
+    <u class="heading"> <h3>{{station_title}}</h3> </u>
 
     <form method="POST" action="/stations/{{ charger_id }}/like">
         <button id="favorite" class="btn btn-sm">
@@ -25,7 +26,7 @@
     Coordinates: (Latitude: {{station_lat}}), (Longitude: {{station_long}})
         <br>
         <br>
-    <b>Connection Information:</b>
+    <b class="heading">Connection Information:</b>
         <br>
     {{station_connection_title}}
         <br>
@@ -34,7 +35,8 @@
     {{station_current_type}}
         <br>
         <br>
-    Chargers: {{station_num}}
+    <b>Chargers: {{station_num}}</b>
+        <br> <br>
 </div>
 
 {% endblock %}

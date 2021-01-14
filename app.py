@@ -304,3 +304,9 @@ def edit_profile():
         flash("Wrong password, please try again.", 'danger')
 
     return render_template('users/edit_user.html', form=form, user_id=user.id)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    """404 page."""
+
+    return render_template('404.html'), 404

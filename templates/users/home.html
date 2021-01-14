@@ -2,13 +2,13 @@
 {% block content %}
 
 {% if g.user %}
-<div class="res">
+<div class="title">
     <u> <h3>Favorite Charging Stations</h3> </u>
 </div>
     {% for title in titles %}
-        <hr>
-        <a href="/stations/{{ids[loop.index0]}}">
+        <a href="/stations/{{ids[loop.index0]}}" class="stationlink">
             <div class="res">
+                    <hr>
                 {{ title }}
                     <br>
                 <i class="fas fa-map-marker-alt" style="font-size:13px"></i>
@@ -20,7 +20,7 @@
         </a>
     {% endfor %}
 
-<div class="res">
+<div class="title">
     <hr> <hr>
     <br>
 <u> <h3>Account Information</h3> </u>
@@ -30,7 +30,7 @@
         <b>Email:</b> {{ user.email }}
     </p>
     <p>
-        <a href="/users/profile">Edit Profile</a>
+        <a href="/users/profile" class="chargelink">Edit Profile</a>
     </p>
     <hr>
 </div>

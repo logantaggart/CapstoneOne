@@ -16,7 +16,7 @@
     <title>Charge</title>
 </head>
 
-<body class="{% if homedesign %} {% if g.user %}clr{% endif %} {% endif %}">
+<body class="{% if homedesign %} clr {% endif %}">
         <nav class="navbar navbar-expand">
           <div class="container-fluid">
             <div class="navbar-header">
@@ -57,6 +57,7 @@
       {% if homedesign %}
         {% if g.user %}
           <br>
+          <br>
           <img src="../static/images/bwcharge.jpg" class="banner">
         {% endif %}
       {% endif %}
@@ -64,9 +65,16 @@
       {% if not g.user %}
         {% if homemessage %}
           <div class="join-message">
-            <h1>Hello!</h1>
-            <h1>Please <a href="/login">Log In</a> or <a href="signup">Sign Up</a> to use Charge</h1>
-          </div>
+              <br>
+            <h1 class="jointitle">Charge</h1>
+              <br>
+            <div class="welcomebox">
+              <h3>Charge is an essential tool for the electric vehicle driving community that allows you to search and locate charging stations for your vehicle.</h3>
+            </div>
+              <br> <br>
+            </div>
+              <br> <br> <br> <br>
+            <h2 class="join">Please <a href="/login" class="chargelink">Log In</a> or <a href="signup" class="chargelink">Sign Up</a> to use Charge</h2>
         {% endif %}
       {% endif %}
     

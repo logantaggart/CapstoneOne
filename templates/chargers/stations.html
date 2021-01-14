@@ -3,9 +3,9 @@
 
 {% if g.user %}
     {% for title in titles %}
-        <hr>
-        <a href="/stations/{{ids[loop.index0]}}">
+        <a href="/stations/{{ids[loop.index0]}}" class="stationlink">
             <div class="res">
+                <hr>
                 {{ title }}
                     <br>
                 <i class="fas fa-map-marker-alt" style="font-size:13px"></i>
