@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="res">
+    <u> <h3>{{station_title}}</h3> </u>
+
+    <form method="POST" action="/stations/{{ charger_id }}/like">
+        <button id="favorite" class="btn btn-sm">
+          <h3 {% if star %} class="liked" {% endif %}><i class="fas fa-star"></i></h3>
+        </button>
+    </form>
+        <br>
+    Operational Status: {{station_operate}}
+        <br>
+    Usage: {{station_type}}
+        <br>
+        <br>
+    {{station_address}}, {{station_city}}, {{station_state}}
+        <br>
+    {{station_country}}
+        <br>
+    Phone Number: {{station_phone}}
+        <br>
+        <br>
+    Coordinates: (Latitude: {{station_lat}}), (Longitude: {{station_long}})
+        <br>
+        <br>
+    <b>Connection Information:</b>
+        <br>
+    {{station_connection_title}}
+        <br>
+    {{station_connection_level}}
+        <br>
+    {{station_current_type}}
+        <br>
+        <br>
+    Chargers: {{station_num}}
+</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if g.user %}
+    {% for title in titles %}
+        <hr>
+        <a href="/stations/{{ids[loop.index0]}}">
+            <div class="res">
+                {{ title }}
+                    <br>
+                <i class="fas fa-map-marker-alt" style="font-size:13px"></i>
+                {{ address[loop.index0] }}, {{ city[loop.index0] }}, {{ state[loop.index0] }}
+                    <br>
+                {{ usage[loop.index0] }}
+                    <br><br>
+            </div>
+        </a>
+    {% endfor %}
+{% endif %}
+
+{% endblock %}
+
+
