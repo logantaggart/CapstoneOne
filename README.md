@@ -10,8 +10,8 @@ Charge is a tool that is designed for the electric vehicle driving community tha
 *  Users can view their favorites and account information in the profile tab.
 
 ## API(s) Used:
-[Open Charge Map API](https://openchargemap.org/site/develop/api?ref=apilist.fun) <br />
-[Mapquest Geocoding API] (https://developer.mapquest.com/documentation/geocoding-api/)
+[Open Charge Map API](https://openchargemap.org/site/develop/api?ref=apilist.fun) 
+[Mapquest Geocoding API](https://developer.mapquest.com/documentation/geocoding-api/)
 ## User Flow:
 1. A user will be directed to the home page:
 	2. If the user is not signed in you will be presented with a description of the app and they will be instructed to either go to the sign up or log in forms via the links.
