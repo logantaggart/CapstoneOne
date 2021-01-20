@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, flash, redirect, session, g, abort
+from flask import Flask, render_template, request, redirect, session, g
 from flask_sqlalchemy import SQLAlchemy
 
 import requests
@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URL', 'postgres:///charge'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
-app.config['SECRET_KEY'] = 'DONOTTELL'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'DONOTTELL')
 
 db = SQLAlchemy(app)
 
@@ -61,7 +61,7 @@ def signup():
             db.session.commit()
 
         except IntegrityError as e:
-            flash("Username already taken", 'danger')
+            
             return render_template('users/signup.html', form=form)
 
         do_login(user)
@@ -81,10 +81,8 @@ def login():
 
         if user:
             do_login(user)
-            flash(f"Hello, {user.username}!", "success")
+            
             return redirect("/")
-
-        flash("Invalid credentials.", 'danger')
 
     return render_template('users/login.html', form=form)
 
@@ -93,7 +91,6 @@ def login():
 def logout():
     do_logout()
 
-    flash("You have successfully logged out.", 'success')
     return redirect("/login")
 
 
@@ -105,7 +102,7 @@ def home():
 @app.route("/stations")
 def list_stations():
     city = request.args.get('q') 
-    MAPQUEST_API_KEY = "TEAEavBJK5sRmqikzjPOQHPLLxGQG02d"
+    MAPQUEST_API_KEY = os.environ.get("MAP_KEY")
 
     geo = requests.get(f"http://www.mapquestapi.com/geocoding/v1/address?key={MAPQUEST_API_KEY}&location={city}")
     geo_resp = geo.json()
@@ -113,7 +110,7 @@ def list_stations():
     lat = geo_resp["results"][0]["locations"][0]["latLng"]["lat"]
     lng = geo_resp["results"][0]["locations"][0]["latLng"]["lng"]
 
-    OPEN_CHARGE_API_KEY = "6e256d5b-964d-4406-b532-068a5c28f68b"
+    OPEN_CHARGE_API_KEY = os.environ.get("CHARGE_KEY")
 
     stations = requests.get("https://api.openchargemap.io/v3/poi/", 
                             params={'key': OPEN_CHARGE_API_KEY, 'maxresults': 10, 'latitude': lat, 'longitude': lng, 'distance': 250})
@@ -146,69 +143,12 @@ def list_stations():
 
 @app.route('/stations/<int:charger_id>')
 def detail_station(charger_id):
-    OPEN_CHARGE_API_KEY = "6e256d5b-964d-4406-b532-068a5c28f68b"
+    OPEN_CHARGE_API_KEY = os.environ.get("CHARGE_KEY")
 
     station_resp = requests.get("https://api.openchargemap.io/v3/poi/", 
                             params={'key': OPEN_CHARGE_API_KEY, 'maxresults': 1, 'chargepointid': charger_id})
     
     station_info = station_resp.json()
-
-    try:
-        station_operate = station_info[0]["StatusType"]["Title"]
-    except:
-        station_operate = "Not Available"
-    try:
-        station_type = station_info[0]["UsageType"]["Title"]
-    except:
-        station_type = "Not Available"
-    try:
-        station_title = station_info[0]["AddressInfo"]["Title"] 
-    except:
-        station_title = "Not Available"
-    try:
-        station_address = station_info[0]["AddressInfo"]["AddressLine1"]
-    except:
-        station_address = "Not Available"
-    try:
-        station_city = station_info[0]["AddressInfo"]["Town"]
-    except:
-        station_city = "Not Available"
-    try:
-        station_state = station_info[0]["AddressInfo"]["StateOrProvince"]
-    except:
-        station_state = "Not Available"
-    try:
-        station_country = station_info[0]["AddressInfo"]["Country"]["Title"]
-    except:
-        station_country = "Not Available"
-    try:        
-        station_lat = station_info[0]["AddressInfo"]["Latitude"]
-    except:
-        station_lat = "Not Available"
-    try:
-        station_long = station_info[0]["AddressInfo"]["Longitude"]
-    except:
-        station_long = "Not Available"
-    try:
-        station_phone = station_info[0]["AddressInfo"]["ContactTelephone1"]
-    except:
-        station_phone = "Not Available"
-    try:
-        station_connection_title = station_info[0]["Connections"][0]["ConnectionType"]["Title"]
-    except:
-        station_connection_title = "Not Available"
-    try:
-        station_connection_level = station_info[0]["Connections"][0]["Level"]["Title"]
-    except:
-        station_connection_level = "Not Available"
-    try:
-        station_current_type = station_info[0]["Connections"][0]["CurrentType"]["Title"]
-    except:
-        station_current_type = "Not Available"
-    try:
-        station_num = station_info[0]["Connections"][0]["Quantity"]
-    except:
-        station_num = "Not Available"
 
     favorites = Station.query.filter(Station.user_id == g.user.id).all()
     favorite_ids = [int(favorite.name) for favorite in favorites]
@@ -220,10 +160,7 @@ def detail_station(charger_id):
         star = False
 
 
-    return render_template('chargers/station_info.html', charger_id=charger_id, station_operate=station_operate, station_type=station_type, station_title=station_title,
-        station_address=station_address, station_city=station_city, station_state=station_state, station_country=station_country,
-        station_lat=station_lat, station_long=station_long, station_phone=station_phone, station_connection_title=station_connection_title,
-        station_connection_level=station_connection_level, station_current_type=station_current_type, station_num=station_num, star=star)
+    return render_template('chargers/station_info.html', station_info=station_info, charger_id=charger_id, star=star)
 
 
 @app.route('/stations/<int:charger_id>/like', methods=['POST'])
@@ -252,7 +189,7 @@ def show_user(user_id):
     favorites = Station.query.filter(Station.user_id == user_id).all()
     favorite_ids = [favorite.name for favorite in favorites]
 
-    OPEN_CHARGE_API_KEY = "6e256d5b-964d-4406-b532-068a5c28f68b"
+    OPEN_CHARGE_API_KEY = os.environ.get("CHARGE_KEY")
 
     station_resp = requests.get("https://api.openchargemap.io/v3/poi/", 
                             params={'key': OPEN_CHARGE_API_KEY, 'chargepointid': favorite_ids})
@@ -286,7 +223,7 @@ def show_user(user_id):
 @app.route('/users/profile', methods=["GET", "POST"])
 def edit_profile():
     if not g.user:
-        flash("Access Unauthorized.", "danger")
+        
         return redirect("/")
 
     user = g.user
@@ -300,8 +237,6 @@ def edit_profile():
 
             db.session.commit()
             return redirect(f"/users/{user.id}")
-
-        flash("Wrong password, please try again.", 'danger')
 
     return render_template('users/edit_user.html', form=form, user_id=user.id)
 
