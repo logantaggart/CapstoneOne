@@ -1,7 +1,7 @@
 # Charge
 ## Description:
 Charge is a tool that is designed for the electric vehicle driving community that allows you to search by a city or state to locate nearby charging stations and detailed information on each individual station to ensure it is the best fit for your vehicle and your charging needs.  <br /> <br />
-[Link to Charge EV Stations] (https://chargecapstone.herokuapp.com/)
+[Link to Charge EV Stations](https://chargecapstone.herokuapp.com/)
 ## Features:
 * 	Users can search for electric vehicle charging stations based on a location.
 *  Users can select a specific charging station to see more details on it.
