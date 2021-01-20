@@ -3,7 +3,7 @@
     <br>
 <div class="title infobox">
         <br>
-    <u class="heading"> <h3>{{station_title}}</h3> </u>
+    <u class="heading"> <h3>{{station_info[0]["AddressInfo"]["Title"] or "Info Not Available"}}</h3> </u>
 
     <form method="POST" action="/stations/{{ charger_id }}/like">
         <button id="favorite" class="btn btn-sm">
@@ -11,31 +11,31 @@
         </button>
     </form>
         <br>
-    Operational Status: {{station_operate}}
+    Operational Status: {{station_info[0]["StatusType"]["Title"] or "Info Not Available"}}
         <br>
-    Usage: {{station_type}}
-        <br>
-        <br>
-    {{station_address}}, {{station_city}}, {{station_state}}
-        <br>
-    {{station_country}}
-        <br>
-    Phone Number: {{station_phone}}
+    Usage: {{station_info[0]["UsageType"]["Title"] or "Info Not Available" or "Info Not Available"}}
         <br>
         <br>
-    Coordinates: (Latitude: {{station_lat}}), (Longitude: {{station_long}})
+    {{station_info[0]["AddressInfo"]["AddressLine1"] or "Info Not Available"}}, {{station_info[0]["AddressInfo"]["Town"] or "Info Not Available"}}, {{station_info[0]["AddressInfo"]["StateOrProvince"] or "Info Not Available"}}
+        <br>
+    {{station_info[0]["AddressInfo"]["Country"]["Title"] or "Info Not Available"}}
+        <br>
+    Phone Number: {{station_info[0]["AddressInfo"]["ContactTelephone1"] or "Info Not Available"}}
+        <br>
+        <br>
+    Coordinates: (Latitude: {{station_info[0]["AddressInfo"]["Latitude"] or "Info Not Available"}}), (Longitude: {{station_info[0]["AddressInfo"]["Longitude"] or "Info Not Available"}})
         <br>
         <br>
     <b class="heading">Connection Information:</b>
         <br>
-    {{station_connection_title}}
+    {{station_info[0]["Connections"][0]["ConnectionType"]["Title"] or "Info Not Available"}}
         <br>
-    {{station_connection_level}}
+    {{station_info[0]["Connections"][0]["Level"]["Title"] or "Info Not Available"}}
         <br>
-    {{station_current_type}}
+    {{station_info[0]["Connections"][0]["CurrentType"]["Title"] or "Info Not Available"}}
         <br>
         <br>
-    <b>Chargers: {{station_num}}</b>
+    <b>Chargers: {{station_info[0]["Connections"][0]["Quantity"] or "Info Not Available"}}</b>
         <br> <br>
 </div>
 
