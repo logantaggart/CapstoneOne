@@ -219,7 +219,7 @@ def show_user(user_id):
     return render_template('users/home.html', user=user, titles=titles, ids=ids, address=address, city=city, state=state, usage=usage)
 
 
-@app.route('/users/profile', methods=["GET", "POST"])
+@app.route('/users/profile', methods=["PATCH"])
 def edit_profile():
     if not g.user:
         
